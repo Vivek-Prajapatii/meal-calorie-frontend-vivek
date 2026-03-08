@@ -70,9 +70,13 @@ export default function LoginCard() {
     alert("Login successful");
   };
 
+  const handleSignup = () => {
+    router.push("/register");
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 px-4">
-      <Card className="w-full max-w-md shadow-xl border-0 bg-white/95 backdrop-blur">
+    <div className="flex m-10 items-center justify-center bg-background px-4">
+      <Card className="w-full max-w-md shadow-xl border bg-card">
         <CardHeader className="space-y-2 text-center">
           <CardTitle className="text-2xl font-bold tracking-tight">
             Welcome Back
@@ -166,7 +170,9 @@ export default function LoginCard() {
           {/* Divider */}
           <div className="mt-6 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <span className="text-primary font-medium cursor-pointer hover:underline">
+            <span className="text-primary font-medium cursor-pointer hover:underline"
+              onClick={handleSignup}
+            >
               Sign up
             </span>
           </div>

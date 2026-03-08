@@ -74,9 +74,14 @@ export default function RegisterCard() {
     }
   };
 
+
+  const handleLogin = () => {
+    router.push("/login");
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 px-4">
-      <Card className="w-full max-w-md shadow-xl border-0 bg-white/95 backdrop-blur">
+    <div className="flex items-center justify-center">
+      <Card className="w-full max-w-md shadow-xl border-0 backdrop-blur">
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
           <CardDescription>Register to start using the app</CardDescription>
@@ -248,7 +253,9 @@ export default function RegisterCard() {
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <span className="text-primary font-medium cursor-pointer hover:underline">
+            <span className="text-primary font-medium cursor-pointer hover:underline"
+              onClick={handleLogin}
+            >
               Login
             </span>
           </div>
