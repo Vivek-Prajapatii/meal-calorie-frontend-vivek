@@ -36,7 +36,6 @@ const getCalories = async (
     });
 
     if (!response.ok) {
-      console.log("Response not ok", response);
       const result = await response?.json();
       onError?.(result?.message);
       return null;
