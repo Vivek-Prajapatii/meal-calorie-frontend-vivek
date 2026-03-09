@@ -54,7 +54,7 @@ const Dashboard = () => {
         <Button
           className="absolute right-1 h-15 px-6 rounded-full text-lg hover:bg-primary/80"
           disabled={!searchQuery.trim()}
-          onClick={() => handleSearch}
+          onClick={() => handleSearch()}
         >
           Search
         </Button>
