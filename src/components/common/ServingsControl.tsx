@@ -1,4 +1,5 @@
 "use client";
+import { useCalorieStore } from "@/stores/userCalorieStore";
 import { Minus, Plus } from "lucide-react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
@@ -10,6 +11,8 @@ export function ServingsControl({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const caloriesData = useCalorieStore((state) => state.caloriesData);
 
   const updateServings = (newCount: number) => {
     const params = new URLSearchParams(searchParams.toString());

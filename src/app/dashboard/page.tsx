@@ -7,7 +7,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
-
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [serving, setServing] = useState<number>(1);
@@ -22,8 +21,10 @@ const Dashboard = () => {
     "Samossa",
   ];
 
-  const handleSearch = () => {
-    router.push(`/calories?dishName=${searchQuery}&servings=${serving}`);
+  const handleSearch = (food: string = "") => {
+    router.push(
+      `/calories?dishName=${food?.trim() || searchQuery}&servings=${serving}`,
+    );
   };
 
   return (
@@ -37,7 +38,7 @@ const Dashboard = () => {
 
       <div className="flex items-center w-full max-w-2xl relative">
         <Search className="absolute left-4 w-5 text-muted-foreground" />
-        
+
         {/* dish name input */}
         <Input
           placeholder="Search food items"
@@ -56,13 +57,16 @@ const Dashboard = () => {
             value={serving}
             onChange={(e) => setServing(Number(e.target.value))}
           />
-          <label className="text-sm text-muted-foreground mr-2 ml-2 mt-1">Serving</label>
+          <label className="text-sm text-muted-foreground mr-2 ml-2 mt-1">
+            Serving
+          </label>
         </div>
 
         {/* search button */}
-        <Button className="absolute right-1 h-15 px-6 rounded-full text-lg hover:bg-primary/80"
+        <Button
+          className="absolute right-1 h-15 px-6 rounded-full text-lg hover:bg-primary/80"
           disabled={!searchQuery.trim()}
-          onClick={handleSearch}
+          onClick={() => handleSearch}
         >
           Search
         </Button>
@@ -73,6 +77,7 @@ const Dashboard = () => {
         {foods?.map((food) => (
           <button
             key={food}
+            onClick={() => handleSearch(food)}
             className="px-4 py-2 text-sm border rounded-full bg-background 
                  shadow-sm hover:shadow-md transition-shadow 
                  hover:bg-accent"

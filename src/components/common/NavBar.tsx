@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -16,7 +18,8 @@ export default function Navbar() {
     setMounted(true);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
     router.push("/login");
   };
 
@@ -40,9 +43,11 @@ export default function Navbar() {
             )}
           </Button>
 
-          <Button variant="destructive" onClick={handleLogout}>
-            Logout
-          </Button>
+          {session && (
+            <Button variant="destructive" onClick={handleLogout}>
+              Logout
+            </Button>
+          )}
         </div>
       </div>
     </nav>

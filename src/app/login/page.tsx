@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +14,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { setAuthCookie } from "@/actions/auth";
 import {
   Form,
   FormControl,
@@ -23,16 +23,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-
 import { Input } from "@/components/ui/input";
 import { loginFormSchema, LoginFormValues } from "@/types/login";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { loginApiUrl } from "../../../api-endpoints";
 
 export default function LoginCard() {
   const router = useRouter();
-
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<LoginFormValues>({
@@ -45,21 +42,16 @@ export default function LoginCard() {
 
   const onSubmit = async (values: LoginFormValues) => {
     try {
-      const response = await fetch(`${loginApiUrl}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
+      const result = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Login failed");
+      if (result?.error) {
+        throw new Error(result.error || "Login failed");
       }
 
-      const data = await response.json();
-      await setAuthCookie(data.token);
       router.push("/dashboard");
     } catch (error) {
       console.error(error);

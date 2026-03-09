@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { setAuthCookie } from "@/actions/auth";
+import { 
+   setSessionItem } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -63,6 +65,7 @@ export default function RegisterCard() {
 
       const data = await response.json();
       await setAuthCookie(data.token);
+      setSessionItem("isLoggedin", true);
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
