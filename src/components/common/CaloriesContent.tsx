@@ -121,7 +121,7 @@ export const CaloriesContent = ({
         </div>
         <p className="text-sm font-semibold">
           Total calories in {servings} serving:{" "}
-          {caloriesData?.calories_per_serving} Cal
+          {caloriesData?.total_calories} Cal
         </p>
       </div>
 
