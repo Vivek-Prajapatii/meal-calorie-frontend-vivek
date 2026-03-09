@@ -7,20 +7,20 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 
 import { Input } from "@/components/ui/input";
@@ -64,20 +64,16 @@ export default function RegisterCard() {
       const data = await response.json();
 
       alert("Registration successful!");
-
-      console.log(data);
-        router.push("/login");
-        
+      router.push("/login");
     } catch (error) {
       console.error(error);
       alert("Something went wrong");
     }
   };
 
-
   const handleLogin = () => {
     router.push("/login");
-  }
+  };
 
   return (
     <div className="flex items-center justify-center">
@@ -253,7 +249,8 @@ export default function RegisterCard() {
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <span className="text-primary font-medium cursor-pointer hover:underline"
+            <span
+              className="text-primary font-medium cursor-pointer hover:underline"
               onClick={handleLogin}
             >
               Login

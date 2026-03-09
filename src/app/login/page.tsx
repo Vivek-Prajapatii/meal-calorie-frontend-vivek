@@ -60,7 +60,6 @@ export default function LoginCard() {
 
       alert("login successful!");
 
-      console.log(data);
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
