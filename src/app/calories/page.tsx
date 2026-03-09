@@ -14,20 +14,22 @@ export default async function CaloriesPage({
   const servings = Number(resolvedParams.servings) || 1;
 
   return (
-    <div className="flex justify-center items-center bg-muted/30 min-h-screen p-6 transition-colors">
-      <div className="bg-card text-card-foreground border rounded-2xl shadow-xl w-full max-w-5xl p-8 space-y-6">
-        <div className="flex items-center">
-          <BackButton />
-        </div>
+    <>
+      <div className="flex justify-center items-center bg-muted/30 min-h-screen p-6 transition-colors">
+        <div className="bg-card text-card-foreground border rounded-2xl shadow-xl w-full max-w-5xl p-8 space-y-6">
+          <div className="flex items-center">
+            <BackButton />
+          </div>
 
-        <Suspense
-          key={`${dishName}-${servings}`}
-          fallback={<CaloriesSkeleton />}
-        >
-          <CaloriesContent dish_name={dishName} servings={servings} />
-        </Suspense>
+          <Suspense
+            key={`${dishName}-${servings}`}
+            fallback={<CaloriesSkeleton />}
+          >
+            <CaloriesContent dish_name={dishName} servings={servings} />
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

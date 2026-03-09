@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+import { setAuthCookie } from "@/actions/auth";
 import {
   Form,
   FormControl,
@@ -21,6 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 
 import { Input } from "@/components/ui/input";
 import { loginFormSchema, LoginFormValues } from "@/types/login";
@@ -57,16 +59,12 @@ export default function LoginCard() {
       }
 
       const data = await response.json();
-
-      alert("login successful!");
-
+      await setAuthCookie(data.token);
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
       alert("Something went wrong");
     }
-
-    alert("Login successful");
   };
 
   const handleSignup = () => {
@@ -169,7 +167,8 @@ export default function LoginCard() {
           {/* Divider */}
           <div className="mt-6 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <span className="text-primary font-medium cursor-pointer hover:underline"
+            <span
+              className="text-primary font-medium cursor-pointer hover:underline"
               onClick={handleSignup}
             >
               Sign up

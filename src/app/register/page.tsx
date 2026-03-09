@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { setAuthCookie } from "@/actions/auth";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,7 +32,6 @@ import { registerApiUrl } from "../../../api-endpoints";
 
 export default function RegisterCard() {
   const router = useRouter();
-
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -62,9 +62,8 @@ export default function RegisterCard() {
       }
 
       const data = await response.json();
-
-      alert("Registration successful!");
-      router.push("/login");
+      await setAuthCookie(data.token);
+      router.push("/dashboard");
     } catch (error) {
       console.error(error);
       alert("Something went wrong");

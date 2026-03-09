@@ -1,11 +1,19 @@
-import { Utensils } from "lucide-react";
-import { getCaloriesApiUrl } from "../../../api-endpoints";
 import { ServingsControl } from "@/components/common/ServingsControl";
+import {
+  caloriePostBody,
+  defaultStyle,
+  nutrientColors,
+} from "@/types/calories";
+import { Utensils } from "lucide-react";
+import { cookies } from "next/headers";
+import { getCaloriesApiUrl } from "../../../api-endpoints";
 import StatsCard from "./StatsCard";
-import { caloriePostBody, defaultStyle, nutrientColors } from "@/types/calories";
+import { StoreInitializer } from "./storeInit";
 
 const getCalories = async (values: caloriePostBody) => {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
     const response = await fetch(`${getCaloriesApiUrl}`, {
       method: "POST",
       headers: {
@@ -33,6 +41,7 @@ export async function CaloriesContent({
 
   return (
     <>
+      <StoreInitializer data={caloriesData} />
       <div className="flex justify-between items-start">
         <h2 className="text-2xl font-bold tracking-tight capitalize">
           {caloriesData.dish_name}
