@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { setAuthCookie } from "@/actions/auth";
-import { 
-   setSessionItem } from "@/lib/utils";
+import { setSessionItem } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,11 +30,14 @@ import { Input } from "@/components/ui/input";
 import { registerFormSchema, RegisterFormValues } from "@/types/register";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { registerApiUrl } from "../../../api-endpoints";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertTriangleIcon } from "lucide-react";
 
 export default function RegisterCard() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),
@@ -66,10 +68,10 @@ export default function RegisterCard() {
       const data = await response.json();
       await setAuthCookie(data.token);
       setSessionItem("isLoggedin", true);
-      router.push("/dashboard");
+      router.push("/login");
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      setError("An unexpected error occurred. Please try again.");
     }
   };
 
@@ -78,7 +80,7 @@ export default function RegisterCard() {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center bg-gradient-to-br from-slate-300 via-stone-200 to-slate-400 dark:from-gray-900 dark:via-stone-800 dark:to-gray-950 min-h-screen px-4">
       <Card className="w-full max-w-md shadow-xl border-0 backdrop-blur">
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
@@ -86,6 +88,13 @@ export default function RegisterCard() {
         </CardHeader>
 
         <CardContent>
+          {error && (
+            <Alert className="mb-4 border-red-200 bg-red-50 text-red-900 dark:border-red-900 dark:bg-red-950 dark:text-red-50">
+              <AlertTriangleIcon />
+              <AlertTitle>Registration Error</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               {/* Name */}

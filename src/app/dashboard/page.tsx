@@ -5,21 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { PageLayout } from "@/components/common/PageLayout";
+import { PageHeader } from "@/components/common/PageHeader";
+import { PopularDishes } from "@/components/common/PopularDishes";
 
 const Dashboard = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [serving, setServing] = useState<number>(1);
-
-  const foods = [
-    "Vada pav",
-    "Paneer tikka",
-    "Idli",
-    "Plain dosa",
-    "Gulab jamun",
-    "Dall tadka",
-    "Samossa",
-  ];
 
   const handleSearch = (food: string = "") => {
     router.push(
@@ -28,13 +21,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex flex-col m-10 items-center justify-center bg-background px-4">
-      <h1 className="scroll-m-20 text-center text-5xl font-extrabold tracking-tight text-balance">
-        Check calories of what you eat. Instantly.
-      </h1>
-      <h2 className="leading-3 [&:not(:first-child)]:mt-7 m-15">
-        10,000+ Indian foods with full nutrition info. Just search.
-      </h2>
+    <PageLayout>
+      <PageHeader />
 
       <div className="flex items-center w-full max-w-2xl relative">
         <Search className="absolute left-4 w-5 text-muted-foreground" />
@@ -42,13 +30,13 @@ const Dashboard = () => {
         {/* dish name input */}
         <Input
           placeholder="Search food items"
-          className="pl-13 pr-35 h-16 rounded-full"
+          className="pl-13 pr-35 h-16 rounded-full border-slate-400 dark:border-stone-600 focus:border-slate-500 dark:focus:border-stone-500"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
 
         {/* Servings input */}
-        <div className="absolute right-30 flex items-center bg-muted rounded-lg px-2 py-1">
+        <div className="absolute right-30 flex items-center bg-muted rounded-lg px-2 py-1 border border-slate-400 dark:border-stone-600">
           <input
             type="number"
             className="w-8 h-8 text-center border-none outline-none"
@@ -73,20 +61,8 @@ const Dashboard = () => {
       </div>
 
       {/* Popular dishes */}
-      <div className="flex flex-wrap justify-center gap-3 mt-6 max-w-3xl">
-        {foods?.map((food) => (
-          <button
-            key={food}
-            onClick={() => handleSearch(food)}
-            className="px-4 py-2 text-sm border rounded-full bg-background 
-                 shadow-sm hover:shadow-md transition-shadow 
-                 hover:bg-accent"
-          >
-            {food}
-          </button>
-        ))}
-      </div>
-    </div>
+      <PopularDishes handleSearch={handleSearch} />
+    </PageLayout>
   );
 };
 

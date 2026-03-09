@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,14 +22,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { loginFormSchema, LoginFormValues } from "@/types/login";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { AlertTriangleIcon, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function LoginCard() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -42,6 +44,7 @@ export default function LoginCard() {
 
   const onSubmit = async (values: LoginFormValues) => {
     try {
+      setError(null);
       const result = await signIn("credentials", {
         email: values.email,
         password: values.password,
@@ -49,13 +52,14 @@ export default function LoginCard() {
       });
 
       if (result?.error) {
-        throw new Error(result.error || "Login failed");
+        setError("Invalid email or password. Please try again.");
+        return;
       }
 
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      setError("An unexpected error occurred. Please try again.");
     }
   };
 
@@ -64,7 +68,7 @@ export default function LoginCard() {
   };
 
   return (
-    <div className="flex m-10 items-center justify-center bg-background px-4">
+    <div className="flex items-center justify-center bg-gradient-to-br from-slate-300 via-stone-200 to-slate-400 dark:from-gray-900 dark:via-stone-800 dark:to-gray-950 min-h-screen px-4">
       <Card className="w-full max-w-md shadow-xl border bg-card">
         <CardHeader className="space-y-2 text-center">
           <CardTitle className="text-2xl font-bold tracking-tight">
@@ -76,6 +80,13 @@ export default function LoginCard() {
         </CardHeader>
 
         <CardContent>
+          {error && (
+            <Alert className="mb-4 border-red-200 bg-red-50 text-red-900 dark:border-red-900 dark:bg-red-950 dark:text-red-50">
+              <AlertTriangleIcon />
+              <AlertTitle>Login Error</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               {/* Email */}
